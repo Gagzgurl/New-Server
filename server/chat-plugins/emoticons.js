@@ -179,4 +179,86 @@ function parseEmoticons(message, room, user, pm) {
 	if (message.startsWith("&gt;")) message = "<font color='#187902'>" + message + "</font>";
 	
 	return message;
+	/**
+* Create a two column table listing emoticons.
+*
+* @return {String} emotes table
+*/
+function create_table() {
+	let emotes_name = Object.keys(emotes);
+	let emotes_list = [];
+	let emotes_group_list = [];
+	let len = emotes_name.length;
+
+	for (let i = 0; i < len; i++) {
+		emotes_list.push("<td style='padding: 5px; box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5) inset; border-radius: 5px;'>" + "<img src='" + emotes[emotes_name[i]] + "'' title='" + emotes_name[i] + "' height='50' width='50' style='vertical-align: middle;  padding-right: 5px;' />" + emotes_name[i] + "</td>");
+	}
+
+	for (let i = 0; i < len; i += 4) {
+		let emoteOutput = [emotes_list[i], emotes_list[i + 1], emotes_list[i + 2], emotes_list[i + 3]];
+		if (i < len) emotes_group_list.push("<tr>" + emoteOutput.join('') + "</tr>");
+	}
+
+	return (
+		"<div class='infobox'><center><font style='font-weight: bold; text-decoration: underline; color: #555;'>List of Emoticons</font></center>" +
+		"<div style='max-height: 300px; overflow-y: scroll; padding: 5px 0px;'><table style='background: rgba(245, 245, 245, 0.4); border: 1px solid #BBB;' width='100%'>" +
+		emotes_group_list.join("") +
+		"</table></div></div>"
+	);
+}
+
+let emotes_table = create_table();
+
+exports.commands = {
+	blockemote: 'blockemoticons',
+	blockemotes: 'blockemoticons',
+	blockemoticon: 'blockemoticons',
+	blockemoticons: function (target, room, user) {
+		if (user.blockEmoticons === (target || true)) return this.sendReply("You are already blocking emoticons in private messages! To unblock, use /unblockemoticons");
+		user.blockEmoticons = true;
+		return this.sendReply("You are now blocking emoticons in private messages.");
+	},
+	blockemoticonshelp: ["/blockemoticons - Blocks emoticons in private messages. Unblock them with /unblockemoticons."],
+
+	unblockemote: 'unblockemoticons',
+	unblockemotes: 'unblockemoticons',
+	unblockemoticon: 'unblockemoticons',
+	unblockemoticons: function (target, room, user) {
+		if (!user.blockEmoticons) return this.sendReply("You are not blocking emoticons in private messages! To block, use /blockemoticons");
+		user.blockEmoticons = false;
+		return this.sendReply("You are no longer blocking emoticons in private messages.");
+	},
+	unblockemoticonshelp: ["/unblockemoticons - Unblocks emoticons in private messages. Block them with /blockemoticons."],
+
+	emotes: 'emoticons',
+	emoticons: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReply("|raw|" + emotes_table);
+	},
+	emoticonshelp: ["/emoticons - Get a list of emoticons."],
+
+	toggleemote: 'toggleemoticons',
+	toggleemotes: 'toggleemoticons',
+	toggleemoticons: function (target, room, user) {
+		if (!this.can('declare', null, room)) return false;
+		room.disableEmoticons = !room.disableEmoticons;
+		this.sendReply("Disallowing emoticons is set to " + room.disableEmoticons + " in this room.");
+		if (room.disableEmoticons) {
+			this.add("|raw|<div class=\"broadcast-red\"><b>Emoticons are disabled!</b><br />Emoticons will not work.</div>");
+		} else {
+			this.add("|raw|<div class=\"broadcast-blue\"><b>Emoticons are enabled!</b><br />Emoticons will work now.</div>");
+		}
+	},
+	toggleemoticonshelp: ["/toggleemoticons - Toggle emoticons on or off."],
+
+	rande: 'randemote',
+	randemote: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		let rng = Math.floor(Math.random() * emotesKeys.length);
+		let randomEmote = emotesKeys[rng];
+		this.sendReplyBox("<img src='" + emotes[randomEmote] + "' title='" + randomEmote + "' height='50' width='50' />");
+	},
+	randemotehelp: ["/randemote - Get a random emote."],
+};
+	
 	
