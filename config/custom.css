@@ -1,6 +1,280 @@
 /*Añade aqui los CSS del servidor. 
 Recuerda probar el estilo antes de Subirlo al server*/
 
-body{
-  background-image:url("https://wallpapercave.com/wp/wp2000163.png")!important
-}
+@-moz-document domain("play.pokemonshowdown.com")
+{
+  
+  body
+  {
+    background: url("http://i.imgur.com/iXX9vfj.jpg") !important;
+    background-size: cover;
+  }
+
+  .ps-room.ps-room-light.scrollable
+  {
+    background: rgba(0, 0, 0, 0.5);
+    color: #FFF;
+    text-shadow: 1px 1px 1px #000;
+    z-index: 1;
+  }
+
+  .ps-room.ps-room-light
+  {
+    border-left: 0px solid #000;
+    background: rgba(0, 0, 0, 0);
+  }
+
+  .ps-room.ps-room-opaque
+  {
+    background: rgba(0, 0, 0, 0.5);
+    color: #FFF;
+  }
+
+  .ps-overlay
+  {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .header
+  {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .header .logo
+  {
+    display: none;
+    opacity: 0;
+  }
+
+  a
+  {
+    color: #DF4397;
+  }
+
+  a:visited
+  {
+    color: #9F328D;
+  }
+
+  font[color="#585858"]
+  {
+    color: #ACACAC !important;
+  }
+
+  .broadcast-red
+  {
+    background: #D57575;
+    border: 1px solid #985555;
+    color: #FFD7D7;
+    padding: 5px 1px 3px 8px;
+    text-shadow: 1px 1px 1px #985555;
+    font-family: helvetica, arial, sans-serif;
+    text-align: center;
+  }
+
+  .broadcast-green
+  {
+    background: #578A54;
+    border: 1px solid #375735;
+    padding: 5px 1px 3px 8px;
+    color: #BEFFB9;
+    text-shadow: 1px 1px 1px #375735;
+    font-family: helvetica, arial, sans-serif;
+    text-align: center;
+  }
+
+  .broadcast-blue
+  {
+    background: #677992;
+    border: 1px solid #414D5E;
+    padding: 5px 1px 3px 8px;
+    color: #C1DAFF;
+    text-shadow: 1px 1px 1px #414D5E;
+    font-family: helvetica, arial, sans-serif;
+    text-align: center;
+  }
+
+  .textbox, .textbox:hover
+  {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #000;
+    color: #DDD;
+    box-shadow: 1px 1px 2px black inset, 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .textbox:focus
+  {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #000;
+    color: white;
+    box-shadow: 1px 1px 2px black inset, 0px 0px 3px purple;
+  }
+
+  .menugroup
+  {
+    background: transparent;
+  }
+
+  .closebutton, .minimizebutton
+  {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .closebutton:hover, .minimizebutton:hover
+  {
+    color: #55D4FF;
+  }
+
+  .mainmenufooter small:after
+  {
+    content: "Made by: Charles Paroissien";
+    font-size: 9pt;
+    color: #cccccc;
+    text-shadow: 0 1px black;
+    position: fixed;
+    size: 6px;
+    right: 330px;
+    top: 5px;
+    width: 300px;
+  }
+
+  .roomlist a.ilink
+  {
+    background: url("http://i.imgur.com/H58NJKC.jpg?1") bottom right no-repeat;
+    background-color: #55D4FF;
+    border: 1px solid #000;
+    color: #311A44;
+    text-shadow: 1px 1px 1px #DF4397;
+    opacity: 0.9;
+    box-shadow: none;
+  }
+
+  .roomlist a.ilink:hover
+  {
+    background: url("http://i.imgur.com/Tb4Q3eq.jpg?2") top left no-repeat;
+    background-color: #55D4FF;
+    border: 1px solid #000;
+    color: #311A44;
+    text-shadow: 1px 1px 1px #DF4397;
+    box-shadow: none;
+  }
+
+  .roomcounters button
+  {
+    background: url("http://i.imgur.com/H58NJKC.jpg?1") bottom right no-repeat;
+    background-color: #55D4FF;
+    border: 1px solid #000;
+    color: #311A44;
+    text-shadow: 1px 1px 1px #DF4397;
+    opacity: 0.9;
+    box-shadow: none;
+  }
+
+  .roomcounters button:hover
+  {
+    background: url("http://i.imgur.com/Tb4Q3eq.jpg?2") top left no-repeat;
+    background-color: #55D4FF;
+    border: 1px solid #000;
+    color: #311A44;
+    text-shadow: 1px 1px 1px #DF4397;
+    box-shadow: none;
+  }
+
+  .infobox
+  {
+    color: #FFF;
+  }
+
+  .challenge
+  {
+    width: 530px;
+    border-color: #DF4397;
+    background: rgba(0, 0, 0, 0.8);
+    color: #DF4397;
+    text-shadow: 1px 1px 1px #000;
+  }
+
+  .userbar .username
+  {
+    color: #000;
+    text-shadow: 1px 1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, -1px -1px 0px #000;
+  }
+  
+  /*************
+  * Footer CSS *
+  *************/
+  
+  .mainmenufooter
+  {
+    color: #DF4397;
+    text-shadow: 1px 1px 1px #000;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 288px;
+    background: rgba(0, 0, 0, 0.5);
+    border-top-right-radius: 5px;
+    padding: 5px 15px 3px 15px;
+    box-shadow: 0px 0px 5px #55D4FF;
+  }
+
+  .mainmenufooter a
+  {
+    color: #DF4397 !important;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: bold;
+  }
+
+  .mainmenufooter a:hover
+  {
+    color: #9F328D !important;
+    text-shadow: 1px 1px 1px #000;
+  }
+  
+  /*********
+  * PM CSS *
+  *********/
+  
+  .pmbox
+  {
+    width: 270px;
+    margin: 0 auto;
+    min-height: 2px;
+  }
+
+  .activitymenu
+  {
+    position: absolute;
+    width: 300px;
+    left: 30px;
+    top: 220px;
+    margin-top: 30px;
+  }
+
+  .pm-window h3
+  {
+    background: url("http://i.imgur.com/H58NJKC.jpg?1") bottom right no-repeat;
+    background-color: #55D4FF;
+    color: #311A44;
+    text-shadow: 1px 1px 1px #FFF;
+    margin: 0;
+    padding: 2px 5px;
+    font-size: 11pt;
+    border: 1px solid #000;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+    width: 530px;
+  }
+
+  .pm-window h3:hover
+  {
+    background: url("http://i.imgur.com/Tb4Q3eq.jpg?2") top left no-repeat;
+    background-color: #55D4FF;
+    border: 1px solid #000;
+  }
+
+  .pm-window h3.pm-minimized
+  {
+    border-radius: 5px;
+  }
