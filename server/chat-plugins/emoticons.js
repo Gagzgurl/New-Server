@@ -1,6 +1,6 @@
 'use strict';
 
-const color = require('../config/color');
+const color = require('../config/color.json');
 let demFeels = function () {};
 demFeels.getEmotes = function () {
 	return {};
