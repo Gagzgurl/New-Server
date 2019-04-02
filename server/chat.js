@@ -575,16 +575,6 @@ class CommandContext extends MessageContext {
 			if (this.pmTarget) {
 				Chat.sendPM(message, this.user, this.pmTarget);
 			} else {
-				let emoticons = GA.parseEmoticons(message);
-				for (let u in this.room.users) {
-					let curUser = Users(u);
-					if (!curUser || !curUser.connected) continue;
-					if (GA.ignoreEmotes[curUser.userid]) {
-						curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
-						continue;
-					}
-					curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
-				}
 				this.room.add(`|c|${this.user.getIdentity(this.room.id)}|${message}`);
 			}
 		}
@@ -1431,8 +1421,6 @@ Chat.parse = function (message, room, user, connection) {
  * @param {?User} onlyRecipient
  */
 Chat.sendPM = function (message, user, pmTarget, onlyRecipient = null) {
-	let emoticons = GA.parseEmoticons(message);
-	if (emoticons) message = "/html " + emoticons;
 	let buf = `|pm|${user.getIdentity()}|${pmTarget.getIdentity()}|${message}`;
 	if (onlyRecipient) return onlyRecipient.send(buf);
 	user.send(buf);
