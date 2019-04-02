@@ -16,11 +16,8 @@
  */
 
 /*
-
 To reload chat commands:
-
 /hotpatch chat
-
 */
 
 'use strict';
@@ -578,6 +575,16 @@ class CommandContext extends MessageContext {
 			if (this.pmTarget) {
 				Chat.sendPM(message, this.user, this.pmTarget);
 			} else {
+				let emoticons = GA.parseEmoticons(message);
+				for (let u in this.room.users) {
+					let curUser = Users(u);
+					if (!curUser || !curUser.connected) continue;
+					if (GA.ignoreEmotes[curUser.userid]) {
+						curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|' + message);
+						continue;
+					}
+					curUser.sendTo(this.room, (this.room.type === 'chat' ? '|c:|' + (~~(Date.now() / 1000)) + '|' : '|c|') + this.user.getIdentity(this.room.id) + '|/html ' + emoticons);
+				}
 				this.room.add(`|c|${this.user.getIdentity(this.room.id)}|${message}`);
 			}
 		}
@@ -1424,6 +1431,8 @@ Chat.parse = function (message, room, user, connection) {
  * @param {?User} onlyRecipient
  */
 Chat.sendPM = function (message, user, pmTarget, onlyRecipient = null) {
+	let emoticons = GA.parseEmoticons(message);
+	if (emoticons) message = "/html " + emoticons;
 	let buf = `|pm|${user.getIdentity()}|${pmTarget.getIdentity()}|${message}`;
 	if (onlyRecipient) return onlyRecipient.send(buf);
 	user.send(buf);
@@ -1878,11 +1887,9 @@ Chat.stringify = function (value, depth = 0) {
 	if (constructor && !buf && constructor !== 'null') return constructor;
 	return `${constructor}{${buf}}`;
 };
-
 Chat.formatText = require('./chat-formatter').formatText;
 Chat.linkRegex = require('./chat-formatter').linkRegex;
 Chat.updateServerLock = false;
-
 /**
  * Gets the dimension of the image at url. Returns 0x0 if the image isn't found, as well as the relevant error.
  * @param {string} url
@@ -1893,7 +1900,6 @@ Chat.getImageDimensions = function (url) {
 		probe(url).then(dimensions => resolve(dimensions), (err) => resolve({height: 0, width: 0, err: err}));
 	});
 };
-
 /**
  * Generates dimensions to fit an image at url into a maximum size of maxWidth x maxHeight,
  * preserving aspect ratio.
@@ -1904,33 +1910,27 @@ Chat.getImageDimensions = function (url) {
  */
 Chat.fitImage = async function (url, maxHeight = 300, maxWidth = 300) {
 	let {height, width} = await Chat.getImageDimensions(url);
-
 	if (width <= maxWidth && height <= maxHeight) return [width, height];
-
 	let ratio;
 	if (height * (maxWidth / maxHeight) > width) {
 		ratio = maxHeight / height;
 	} else {
 		ratio = maxWidth / width;
 	}
-
 	return [Math.round(width * ratio), Math.round(height * ratio)];
 };
-
 /**
  * Used by ChatMonitor.
  * @typedef {[(string | RegExp), string, string?, number]} FilterWord
  * @typedef {(this: CommandContext, line: FilterWord, room: ChatRoom | GameRoom?, user: User, message: string, lcMessage: string, isStaff: boolean) => (string | false | undefined)} MonitorHandler
  * @typedef {{location: string, punishment: string, label: string, condition?: string, monitor?: MonitorHandler}} Monitor
  */
-
 /** @type {{[k: string]: FilterWord[]}} */
 Chat.filterWords = {};
 /** @type {{[k: string]: Monitor}} */
 Chat.monitors = {};
 /** @type {Map<string, string>} */
 Chat.namefilterwhitelist = new Map();
-
 /**
  * @param {string} id
  * @param {Monitor} entry
@@ -1939,7 +1939,6 @@ Chat.registerMonitor = function (id, entry) {
 	if (!Chat.filterWords[id]) Chat.filterWords[id] = [];
 	Chat.monitors[id] = entry;
 };
-
 /**
  * @param {string} pageid
  * @param {User} user
